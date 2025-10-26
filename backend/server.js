@@ -106,10 +106,12 @@ app.post('/goal/create', async (req, res) => {
             .from('goals')
             .insert({
                 user_id: userId,
-                goal_amount: goalAmount,
-                deposit_amount: depositAmount,
-                frequency: 'weekly'
-            })
+            goal_amount: goalAmount,
+            deposit_amount: depositAmount,
+            frequency: 'weekly',
+            last_deposit_date: new Date().toISOString(),
+            next_deposit_due: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days from now
+        })
             .select()
             .single();
         
@@ -219,6 +221,15 @@ app.post('/pet/calculate', async (req, res) => {
         
         if (updateError) throw updateError;
         
+        // Update goal's last deposit date and next due date
+        await supabase
+            .from('goals')
+            .update({
+                last_deposit_date: new Date().toISOString(),
+                next_deposit_due: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+            })
+            .eq('user_id', user.id);
+
         // Record deposit in history
         await supabase
             .from('deposits')
