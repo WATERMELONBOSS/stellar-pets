@@ -20,7 +20,7 @@ console.log('✅ Supabase connected:', process.env.SUPABASE_URL);
 
 // Initialize Express app
 const app = express();
-const PORT = 3000;;
+const PORT = 3000;
 
 // Middleware to parse JSON requests
 app.use(express.json());
@@ -39,17 +39,7 @@ const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
 console.log('Backend configured to use contract:', CONTRACT_ADDRESS);
 
 // Test endpoint to verify backend is running
-// Call this from browser: http://localhost:5000/health
-app.get('/health', (req, res) => {
-    res.json({ 
-        status: 'Backend is running!',
-        contract: CONTRACT_ADDRESS,
-        network: 'testnet'
-    });
-});
-
-// Test endpoint to verify backend is running
-// Call this from browser: http://localhost:5000/health
+// Call this from browser: http://localhost:3000/health
 app.get('/health', (req, res) => {
     res.json({ 
         status: 'Backend is running!',
@@ -106,12 +96,12 @@ app.post('/goal/create', async (req, res) => {
             .from('goals')
             .insert({
                 user_id: userId,
-            goal_amount: goalAmount,
-            deposit_amount: depositAmount,
-            frequency: 'weekly',
-            last_deposit_date: new Date().toISOString(),
-            next_deposit_due: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days from now
-        })
+                goal_amount: goalAmount,
+                deposit_amount: depositAmount,
+                frequency: 'weekly',
+                last_deposit_date: new Date().toISOString(),
+                next_deposit_due: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days from now
+            })
             .select()
             .single();
         
@@ -361,7 +351,7 @@ app.get('/pet/state', async (req, res) => {
         // Get user by wallet address
         const { data: user, error: userError } = await supabase
             .from('users')
-            .select('id, pet_name, pet_type')
+            .select('id')
             .eq('wallet_address', wallet)
             .single();
         
@@ -391,8 +381,8 @@ app.get('/pet/state', async (req, res) => {
         res.json({
             success: true,
             petState: {
-                petName: user.pet_name,
-                petType: user.pet_type,
+                petName: petState.pet_name,
+                petType: petState.pet_type,
                 health: petState.health,
                 happiness: petState.happiness,
                 growthLevel: petState.growth_level,
@@ -409,7 +399,6 @@ app.get('/pet/state', async (req, res) => {
 });
 
 // Start the Express server
-// Backend will run on http://localhost:5000
 app.listen(PORT, () => {
     console.log(`✅ Stellar Pets Backend running on http://localhost:${PORT}`);
     console.log(`📝 Contract Address: ${CONTRACT_ADDRESS}`);

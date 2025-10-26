@@ -30,7 +30,6 @@ export const PetProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     
     setLoading(true);
     try {
-      // MOCK DATA - works without backend
       await new Promise(resolve => setTimeout(resolve, 800));
       
       const mockPet: Pet = {
@@ -73,7 +72,6 @@ export const PetProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     
     setLoading(true);
     try {
-      // MOCK - local state update
       await new Promise(resolve => setTimeout(resolve, 1500));
       
       setCurrentPet(prev => prev ? {
@@ -101,7 +99,6 @@ export const PetProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     
     setLoading(true);
     try {
-      // MOCK - local state update
       await new Promise(resolve => setTimeout(resolve, 1500));
       
       setCurrentPet(prev => prev ? {
@@ -122,13 +119,11 @@ export const PetProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }
   };
 
-  // 🔌 REAL BACKEND INTEGRATION - Creates goal in database
   const mintPet = async (type: 'dragon' | 'pig' | 'puppy', name: string) => {
     setLoading(true);
     try {
       console.log('🔌 Calling backend API to create pet...');
       
-      // REAL API CALL to your backend
       const response = await fetch(`${API_BASE_URL}/goal/create`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -144,34 +139,35 @@ export const PetProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       const data = await response.json();
       console.log('✅ Backend response:', data);
       
-      if (data.success) {
-        // Use data from backend
-        const newPet: Pet = {
-          id: data.data.userId,
-          name,
-          type,
-          owner: publicKey!,
-          health: data.data.petState.health,
-          happiness: data.data.petState.happiness,
-          level: 1,
-          evolutionStage: 0,
-          totalStaked: 0,
-          feedingStreak: 0,
-          lastFedTimestamp: Date.now(),
-          battlesWon: 0,
-          createdAt: Date.now(),
-          accessories: [],
-        };
-        
-        setCurrentPet(newPet);
-        console.log(`🎉 ${name} created in backend database!`);
-        alert(`🎉 ${name} the ${type} has been born and saved to database!`);
+      if (!data.success) {
+        throw new Error('Backend failed to create pet');
       }
-      
-    } catch (error) {
-      console.error('Backend failed, using fallback:', error);
-      // Fallback to mock if backend fails
+
       const newPet: Pet = {
+        id: data.data.userId,
+        name,
+        type,
+        owner: publicKey!,
+        health: data.data.petState.health,
+        happiness: data.data.petState.happiness,
+        level: 1,
+        evolutionStage: 0,
+        totalStaked: 0,
+        feedingStreak: 0,
+        lastFedTimestamp: Date.now(),
+        battlesWon: 0,
+        createdAt: Date.now(),
+        accessories: [],
+      };
+      
+      setCurrentPet(newPet);
+      console.log('✅ Pet saved to database!');
+      alert(`🎉 ${name} the ${type} has been born and saved to database!`);
+      
+    } catch (error: any) {
+      console.error('Error creating pet:', error);
+      
+      const fallbackPet: Pet = {
         id: `pet-${Date.now()}`,
         name,
         type,
@@ -187,8 +183,8 @@ export const PetProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         createdAt: Date.now(),
         accessories: [],
       };
-      setCurrentPet(newPet);
-      alert(`🎉 ${name} the ${type} has been born!`);
+      setCurrentPet(fallbackPet);
+      alert(`⚠️ Backend failed, using fallback.\n\n${name} the ${type} created locally!`);
     } finally {
       setLoading(false);
     }
