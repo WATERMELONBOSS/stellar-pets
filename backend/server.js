@@ -92,14 +92,13 @@ app.post('/goal/create', async (req, res) => {
                 .from('users')
                 .insert({
                     wallet_address: walletAddress,
-                    pet_name: petName || 'My Pet',
-                    pet_type: petType || 'dragon'
                 })
                 .select()
                 .single();
             
             if (userError) throw userError;
             userId = newUser.id;
+            console.log('✅ User step complete. UserID:', userId);
         }
         
         // Step 2: Create goal
@@ -115,12 +114,15 @@ app.post('/goal/create', async (req, res) => {
             .single();
         
         if (goalError) throw goalError;
+        console.log('✅ Goal created successfully:', goal.id);
         
         // Step 3: Initialize pet state
         const { data: petState, error: petError } = await supabase
             .from('pet_states')
             .insert({
                 user_id: userId,
+                pet_name: petName || 'My Pet',
+                pet_type: petType || 'dragon',
                 health: 50,
                 happiness: 50,
                 growth_level: 0,
@@ -131,6 +133,7 @@ app.post('/goal/create', async (req, res) => {
             .single();
         
         if (petError) throw petError;
+        console.log('✅ Pet state created successfully:', petState.id);
         
         res.json({
             success: true,

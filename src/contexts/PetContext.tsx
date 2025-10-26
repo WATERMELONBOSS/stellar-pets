@@ -1,9 +1,11 @@
-// Pet state management and smart contract interactions
-
+// Pet state management - integrated with backend
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Pet, StakingInfo } from '../types';
 import { CONFIG } from '../constants/config';
 import { useWallet } from './WalletContext';
+
+// Backend API URL - will be replaced with deployed URL
+const API_BASE_URL = 'http://localhost:3000';
 
 interface PetContextType {
   currentPet: Pet | null;
@@ -23,18 +25,13 @@ export const PetProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [stakingInfo, setStakingInfo] = useState<StakingInfo | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // 🔌 LOAD PET DATA FROM SMART CONTRACT
   const refreshPetData = async () => {
     if (!publicKey) return;
     
     setLoading(true);
     try {
-      // 🔌 SMART CONTRACT CALL - Replace with actual contract interaction
-      // const petData = await contractService.getPetData(publicKey);
-      // setCurrentPet(petData);
-      
-      // MOCK DATA FOR DEMO
-      await new Promise(resolve => setTimeout(resolve, 800)); // Simulate blockchain delay
+      // MOCK DATA - works without backend
+      await new Promise(resolve => setTimeout(resolve, 800));
       
       const mockPet: Pet = {
         id: 'pet-001',
@@ -71,18 +68,14 @@ export const PetProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }
   };
 
-  // 🔌 FEED PET = STAKE FUNDS
   const feedPet = async (amount: number) => {
     if (!currentPet) return;
     
     setLoading(true);
     try {
-      // 🔌 SMART CONTRACT CALL - Stake funds
-      // const result = await contractService.stakeFunds(currentPet.id, amount);
-      
+      // MOCK - local state update
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      // Update pet state
       setCurrentPet(prev => prev ? {
         ...prev,
         health: Math.min(100, prev.health + CONFIG.GAME_CONSTANTS.HEALTH_GAIN_PER_FEED),
@@ -103,18 +96,14 @@ export const PetProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }
   };
 
-  // 🔌 WITHDRAW FUNDS
   const withdrawFunds = async (amount: number) => {
     if (!currentPet) return;
     
     setLoading(true);
     try {
-      // 🔌 SMART CONTRACT CALL - Unstake funds
-      // const result = await contractService.unstakeFunds(currentPet.id, amount);
-      
+      // MOCK - local state update
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      // Apply penalty
       setCurrentPet(prev => prev ? {
         ...prev,
         health: Math.max(0, prev.health - 30),
@@ -133,15 +122,55 @@ export const PetProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }
   };
 
-  // 🔌 MINT NEW PET NFT
+  // 🔌 REAL BACKEND INTEGRATION - Creates goal in database
   const mintPet = async (type: 'dragon' | 'pig' | 'puppy', name: string) => {
     setLoading(true);
     try {
-      // 🔌 SMART CONTRACT CALL - Mint NFT
-      // const result = await contractService.mintPet(type, name);
+      console.log('🔌 Calling backend API to create pet...');
       
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // REAL API CALL to your backend
+      const response = await fetch(`${API_BASE_URL}/goal/create`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          walletAddress: publicKey || 'DEMO_WALLET',
+          petName: name,
+          petType: type,
+          goalAmount: 5000,
+          depositAmount: 50
+        })
+      });
       
+      const data = await response.json();
+      console.log('✅ Backend response:', data);
+      
+      if (data.success) {
+        // Use data from backend
+        const newPet: Pet = {
+          id: data.data.userId,
+          name,
+          type,
+          owner: publicKey!,
+          health: data.data.petState.health,
+          happiness: data.data.petState.happiness,
+          level: 1,
+          evolutionStage: 0,
+          totalStaked: 0,
+          feedingStreak: 0,
+          lastFedTimestamp: Date.now(),
+          battlesWon: 0,
+          createdAt: Date.now(),
+          accessories: [],
+        };
+        
+        setCurrentPet(newPet);
+        console.log(`🎉 ${name} created in backend database!`);
+        alert(`🎉 ${name} the ${type} has been born and saved to database!`);
+      }
+      
+    } catch (error) {
+      console.error('Backend failed, using fallback:', error);
+      // Fallback to mock if backend fails
       const newPet: Pet = {
         id: `pet-${Date.now()}`,
         name,
@@ -158,19 +187,13 @@ export const PetProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         createdAt: Date.now(),
         accessories: [],
       };
-      
       setCurrentPet(newPet);
-      console.log(`🎉 ${name} the ${type} has been born!`);
       alert(`🎉 ${name} the ${type} has been born!`);
-      
-    } catch (error) {
-      console.error('Mint failed:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  // Auto-load pet data when wallet connects
   useEffect(() => {
     if (publicKey) {
       refreshPetData();
