@@ -1,6 +1,7 @@
-// Wallet connection and management context
-
+// Real Freighter wallet with fallback to mock
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import * as freighterApi from '@stellar/freighter-api';
+import * as StellarSdk from '@stellar/stellar-sdk';
 
 interface WalletContextType {
   publicKey: string | null;
@@ -13,6 +14,9 @@ interface WalletContextType {
 
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
 
+// Mock wallet as fallback
+const MOCK_WALLET = 'GXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
+
 export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [publicKey, setPublicKey] = useState<string | null>(null);
   const [connecting, setConnecting] = useState(false);
@@ -21,31 +25,66 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   const connect = async () => {
     setConnecting(true);
     try {
-      console.log('🔄 Connecting wallet...');
+      console.log('🔄 Attempting Freighter connection...');
       
-      // 🔌 INTEGRATE FREIGHTER WALLET HERE
-      // Example:
-      // const freighter = await window.freighter.getPublicKey();
-      // setPublicKey(freighter);
+      // Try real Freighter first
+      const freighterInstalled = await freighterApi.isConnected();
       
-      // MOCK FOR DEMO - Replace with real wallet connection
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate delay
-      const mockKey = 'GXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
+      if (freighterInstalled) {
+        console.log('✅ Freighter detected! Requesting access...');
+        
+        try {
+          // Step 1: Request permission (triggers popup)
+          console.log('📝 Requesting Freighter permission...');
+          await freighterApi.requestAccess();
+          console.log('✅ Permission granted!');
+          
+          // Step 2: Now get the address
+          const result = await freighterApi.getAddress();
+          console.log('🔍 DEBUG - getAddress result:', result);
+          
+          const address = typeof result === 'string' ? result : result?.address;
+          console.log('🔍 DEBUG - final address:', address);
+          
+          if (address && address !== '') {
+            console.log('✅ Real wallet connected:', address);
+            setPublicKey(address);
+            
+            // Fetch real balance from Stellar testnet
+            const server = new StellarSdk.Horizon.Server('https://horizon-testnet.stellar.org');
+            try {
+              const account = await server.loadAccount(address);
+              const xlmBalance = account.balances.find((b: any) => b.asset_type === 'native');
+              const realBalance = xlmBalance ? parseFloat(xlmBalance.balance) : 0;
+              setBalance(realBalance);
+              console.log('💰 Real balance:', realBalance, 'XLM');
+              return; // Success! Exit early
+            } catch (balanceErr) {
+              console.log('Account not funded, balance = 0');
+              setBalance(0);
+              return; // Still success, just no balance
+            }
+          }
+        } catch (freighterErr) {
+          console.warn('⚠️ Freighter error, falling back to mock:', freighterErr);
+        }
+      } else {
+        console.log('⚠️ Freighter not installed, using mock wallet');
+      }
       
-      console.log('✅ Mock connection successful, updating state...');
-      
-      // Update state in a single batch
-      setPublicKey(mockKey);
+      // FALLBACK TO MOCK if Freighter fails
+      console.log('📝 Using mock wallet for demo');
+      await new Promise(resolve => setTimeout(resolve, 500));
+      setPublicKey(MOCK_WALLET);
       setBalance(100.50);
+      console.log('✅ Mock wallet connected');
       
-      console.log('✅ Wallet connected! Public Key:', mockKey);
     } catch (error) {
-      console.error('❌ Wallet connection failed:', error);
-      setPublicKey(null);
-      setBalance(0);
-      alert('Failed to connect wallet. Please try again.');
+      console.error('❌ Connection failed:', error);
+      // Last resort: use mock
+      setPublicKey(MOCK_WALLET);
+      setBalance(100.50);
     } finally {
-      console.log('🔄 Resetting connecting state...');
       setConnecting(false);
     }
   };
