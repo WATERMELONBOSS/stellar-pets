@@ -9,9 +9,10 @@ import { FeedingModal } from '../components/features/FeedingModal';
 import { useWallet } from '../contexts/WalletContext';
 import { usePet } from '../contexts/PetContext';
 import { Navigate } from 'react-router-dom';
-
+import { HungerNotification } from '../components/features/HungerNotification';
 
 const Dashboard: React.FC = () => {
+  const [showHungerNotification, setShowHungerNotification] = useState(true);
   const { isConnected, balance } = useWallet();
   const { currentPet, loading, feedPet, withdrawFunds } = usePet();
   const [showFeedingModal, setShowFeedingModal] = useState(false);
@@ -32,9 +33,21 @@ const Dashboard: React.FC = () => {
     withdrawFunds(25);
   };
 
+  // Calculate days since last feed
+  const daysSinceLastFeed = currentPet 
+    ? Math.floor((Date.now() - currentPet.lastFedTimestamp) / (1000 * 60 * 60 * 24))
+    : 0;
+
   return (
-    <PageLayout title="🎃 Dashboard" subtitle="Manage your pet and track your savings">
+    <PageLayout title="🎃 Stella's Home" subtitle="Take care of Stella and watch your savings grow!">
       <div className="space-y-6">
+        {/* Hunger Notification - Shows when Stella needs feeding */}
+        <HungerNotification
+          petName="Stella"
+          daysSinceLastFeed={daysSinceLastFeed}
+          onFeed={() => setShowFeedingModal(true)}
+          onDismiss={() => setShowHungerNotification(false)}
+        />
         {/* Stats Overview */}
         <StatsDisplay
           totalStaked={currentPet.totalStaked}

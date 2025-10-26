@@ -7,7 +7,7 @@ interface HealthBarProps {
   value: number;
   maxValue?: number;
   color?: 'red' | 'yellow' | 'green' | 'blue' | 'purple';
-  icon?: string;
+  icon?: React.ReactNode;
   showPercentage?: boolean;
 }
 
@@ -40,7 +40,7 @@ export const HealthBar: React.FC<HealthBarProps> = ({
     <div className="space-y-2">
       <div className="flex justify-between items-center text-sm">
         <span className={clsx("font-medium", getEmotionColor())}>
-          {icon && <span className="mr-1">{icon}</span>}
+          {icon && <span className="mr-1 inline-flex items-center">{icon}</span>}
           {label}
         </span>
         {showPercentage && (

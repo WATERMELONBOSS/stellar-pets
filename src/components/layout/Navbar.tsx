@@ -24,9 +24,13 @@ export const Navbar: React.FC = () => {
       <div className="max-w-6xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <Link to="/dashboard" className="flex items-center gap-3 cursor-pointer">
-          <div className="text-3xl">🎃</div>
+          <img 
+            src="/stella-logo-removebg-preview.png"
+            alt="Stella Logo"
+            className="w-10 h-10 object-contain"
+          />
           <div className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
-            Stellar Pets
+            Stella
           </div>
         </Link>
 

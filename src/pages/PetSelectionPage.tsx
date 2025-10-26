@@ -18,35 +18,35 @@ const PetSelectionPage: React.FC = () => {
   const pets = [
     {
       type: 'dragon' as const,
-      emoji: '🐉',
+      imagePath: '/Dragon-pet-removebg.png',
       name: 'Dragon',
       tagline: 'Fierce & Powerful',
       description: 'A legendary creature with unmatched strength. Perfect for ambitious savers!',
       color: 'from-red-500 via-orange-500 to-yellow-500',
       bgColor: 'from-red-900/40 to-orange-900/40',
-      traits: ['🔥 Fierce', '💪 Strong', '⚡ Fast'],
+      traits: ['Fierce', 'Strong', 'Fast'],
       defaultName: 'Sparkles',
     },
     {
       type: 'pig' as const,
-      emoji: '🐷',
+      imagePath: '/Pig-pet-removebg.png',
       name: 'Piggy',
       tagline: 'Lucky & Wealthy',
       description: 'A symbol of prosperity and good fortune. Bring wealth to your savings!',
       color: 'from-pink-500 via-purple-500 to-pink-600',
       bgColor: 'from-pink-900/40 to-purple-900/40',
-      traits: ['🍀 Lucky', '💰 Wealthy', '😊 Happy'],
+      traits: ['Lucky', 'Wealthy', 'Happy'],
       defaultName: 'Oinkers',
     },
     {
       type: 'puppy' as const,
-      emoji: '🐶',
+      imagePath: '/Puppy-pet-removebg.png',
       name: 'Puppy',
       tagline: 'Loyal & Loving',
       description: 'Your most faithful companion. Loyalty rewards consistency!',
       color: 'from-blue-500 via-cyan-500 to-teal-500',
       bgColor: 'from-blue-900/40 to-cyan-900/40',
-      traits: ['❤️ Loyal', '🎾 Playful', '⭐ Energetic'],
+      traits: ['Loyal', 'Playful', 'Energetic'],
       defaultName: 'Buddy',
     },
   ];
@@ -71,7 +71,7 @@ const PetSelectionPage: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="max-w-md w-full"
+          className="max-w-3xl w-full"
         >
           {/* Welcome card with glow effect */}
           <div className="relative">
@@ -87,27 +87,29 @@ const PetSelectionPage: React.FC = () => {
               transition={{ duration: 3, repeat: Infinity }}
               className="absolute inset-0 rounded-3xl"
             />
-            <div className="relative bg-slate-800/80 backdrop-blur-xl border border-purple-500/30 rounded-3xl p-10 text-center space-y-6 shadow-2xl">
-              {/* Animated pumpkin */}
-              <motion.div
-                animate={{ 
-                  rotate: [0, 10, -10, 10, 0],
-                  y: [0, -10, 0]
-                }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="text-9xl"
-              >
-                🎃
-              </motion.div>
+            <div className="relative bg-slate-800/80 backdrop-blur-xl border border-purple-500/30 rounded-3xl p-6 text-center space-y-6 shadow-2xl">
+              {/* Character growth video */}
+              <div className="w-full max-w-2xl mx-auto mb-8 rounded-2xl overflow-hidden shadow-2xl">
+                <video 
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline
+                  className="w-full h-full object-cover"
+                >
+                  <source src="/Character_Grows_After_Money_Transfer.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
               <div className="space-y-3">
                 <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400">
-                  Stellar Pets
+                  Meet Stella!
                 </h1>
                 <p className="text-xl text-gray-300">
-                  Your Magical Savings Companion
+                  Feed your future
                 </p>
                 <p className="text-sm text-gray-400">
-                  Save money, feed your pet, watch it grow! 🌟
+                  Stella will be your companion on this savings journey
                 </p>
               </div>
               {/* Connect button with animation */}
@@ -152,13 +154,17 @@ const PetSelectionPage: React.FC = () => {
             <div className="text-center space-y-4">
               <motion.div
                 animate={{ 
-                  rotate: [0, 10, -10, 10, 0],
+                  y: [0, -10, 0],
                   scale: [1, 1.1, 1]
                 }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="text-9xl inline-block"
+                className="w-48 h-48 mx-auto"
               >
-                {selected.emoji}
+                <img 
+                  src={selected.imagePath}
+                  alt={selected.name}
+                  className="w-full h-full object-contain"
+                />
               </motion.div>
               <h2 className={`text-4xl font-bold bg-gradient-to-r ${selected.color} text-transparent bg-clip-text`}>
                 Name Your {selected.name}!
@@ -267,7 +273,7 @@ const PetSelectionPage: React.FC = () => {
             Choose Your Companion
           </h1>
           <p className="text-2xl text-gray-300">
-            Your pet will grow stronger as you save! 🚀
+            Feed your future
           </p>
           <p className="text-gray-400">
             Select wisely - they'll be with you on your entire savings journey
@@ -307,16 +313,20 @@ const PetSelectionPage: React.FC = () => {
                   <motion.div
                     animate={{ 
                       y: [0, -15, 0],
-                      rotate: [0, 5, -5, 0]
+                      scale: [1, 1.1, 1]
                     }}
                     transition={{ 
                       duration: 3,
                       repeat: Infinity,
                       delay: index * 0.3
                     }}
-                    className="text-9xl text-center"
+                    className="w-48 h-48 mx-auto"
                   >
-                    {pet.emoji}
+                    <img 
+                      src={pet.imagePath}
+                      alt={pet.name}
+                      className="w-full h-full object-contain"
+                    />
                   </motion.div>
                   {/* Pet name and tagline */}
                   <div className="text-center space-y-2">
@@ -364,7 +374,7 @@ const PetSelectionPage: React.FC = () => {
           transition={{ delay: 0.8 }}
           className="text-center text-gray-400 text-sm"
         >
-          💡 Tip: Each pet has unique personality traits that affect their reactions!
+          Tip: Each pet has unique personality traits that affect their reactions!
         </motion.div>
       </div>
     </div>
