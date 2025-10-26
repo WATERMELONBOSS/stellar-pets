@@ -2,7 +2,7 @@
 
 **Gamified savings platform where your blockchain pet grows with your savings.**
 
-> **🎥 [Demo Video](ADD_YOUTUBE_OR_LOOM_LINK_HERE)**  
+> **🎥 [Demo Video]([ADD_YOUTUBE_OR_LOOM_LINK_HERE](https://drive.google.com/file/d/1ErKT-9yl4Onp9bi855D9sVkbqpbj-iCb/view?usp=sharing))**  
 > **🌐 [Live Demo](ADD_VERCEL_DEPLOYMENT_LINK_HERE)**  
 > **🔗 [Smart Contract on Explorer](https://stellar.expert/explorer/testnet/contract/CACXDW44LVYFQI6YLPFI7VOT34VYRXOBC5KVEIZVSEB2LEZXHXPCDRUA)**
 
