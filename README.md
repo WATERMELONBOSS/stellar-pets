@@ -1,73 +1,100 @@
-# React + TypeScript + Vite
+# 🎃 Stella - Your Savings Companion
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**A blockchain-powered gamified savings platform where your digital pet companion "Stella" grows healthier and happier when you save money on schedule, but becomes sad when you miss deposits.**
 
-Currently, two official plugins are available:
+Built for **EasyA x Stellar Hack-o-Ween 2024** 🏆
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🎮 Live Demo
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**🌐 Frontend:** [Coming Soon - Deploy to Vercel]  
+**📹 Demo Video:** [Add Loom Video Link Here]  
+**🔗 Smart Contract:** `CACXDW44LVYFQI6YLPFI7VOT34VYRXOBC5KVEIZVSEB2LEZXHXPCDRUA`  
+**🔍 Block Explorer:** [Add Stellar Expert Link Here]
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 💡 The Problem
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Traditional savings apps are boring and lack emotional engagement. People struggle to maintain consistent saving habits because there's no immediate feedback or motivation.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🌟 Our Solution
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Meet **Stella** - your personal savings companion! Stella is a digital pet that lives on the Stellar blockchain. When you save money on schedule, Stella grows healthier and happier. Miss a deposit? Stella gets hungry and sad. This emotional connection transforms boring savings into an engaging game!
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## ✨ Key Features
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 🐉 Choose Your Stella
+- Select from 3 adorable companions: Dragon, Piggy, or Puppy
+- Each Stella is a unique NFT on Stellar blockchain
+- Pet evolves through 4 stages: Baby → Teen → Adult → Mega
+
+### 💰 Gamified Savings
+- Stake USDC/XLM to "feed" Stella
+- Set weekly/monthly savings goals
+- Watch Stella's health and happiness grow with each deposit
+- Early withdrawals make Stella sad (with visual penalties)
+
+### 🏆 Social Competition
+- Compete with friends and family on the leaderboard
+- Ranked by Stella's happiness level and feeding streaks
+- Public pet display shows off your consistency
+
+### 🎁 NFT Achievement System
+- Earn achievement badges as NFTs
+- 🏆 Top Saver - Reach top 10 on leaderboard
+- 💎 Diamond Hands - Save $1,000+
+- 👑 Pet Master - Reach Level 10
+- 🔥 Hot Streak - 30-day feeding streak
+- ⭐ Consistent Saver - 7-day streak
+- 🎯 Goal Crusher - Complete your savings goal
+
+### 📊 Progress Tracking
+- Real-time health and happiness meters
+- Feeding streak counter
+- Evolution progress tracking
+- Activity history
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **React** + **TypeScript** - Type-safe component architecture
+- **Vite** - Lightning-fast build tool
+- **Tailwind CSS** - Utility-first styling
+- **Framer Motion** - Smooth animations
+- **React Router** - Client-side routing
+- **Lucide React** - Beautiful icons
+
+### Blockchain
+- **Stellar Soroban** - Smart contracts written in Rust
+- **Freighter Wallet** - Wallet connection and transaction signing
+- **Stellar SDK** - Blockchain interactions
+- **Stellar Testnet** - Development and testing
+
+### Backend
+- **Node.js** + **Express** - REST API server
+- **Supabase** - PostgreSQL database
+- **Stellar SDK** - Smart contract integration
+
+### Smart Contracts (Rust)
+- Pet state management (health, happiness, evolution)
+- Staking mechanism (deposit/withdrawal)
+- Achievement tracking
+- Goal progress monitoring
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js 18+
+- npm or yarn
+- Freighter Wallet browser extension
+
+### Installation
+```bash
