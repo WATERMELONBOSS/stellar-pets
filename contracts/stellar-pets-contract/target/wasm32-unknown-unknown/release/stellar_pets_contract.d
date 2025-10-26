@@ -1,0 +1,1 @@
+/Users/milansrinivas/stellar-pets/contracts/stellar-pets-contract/target/wasm32-unknown-unknown/release/stellar_pets_contract.wasm: /Users/milansrinivas/stellar-pets/contracts/stellar-pets-contract/src/lib.rs

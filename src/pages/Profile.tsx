@@ -1,15 +1,45 @@
-import React from 'react';
-import { Card } from '../components/ui/Card';
-import { Award, Calendar, TrendingUp, Target } from 'lucide-react';
+import React from "react";
+import { Card } from "../components/ui/Card";
+import { Award, Calendar, TrendingUp, Target } from "lucide-react";
 
 const Profile: React.FC = () => {
   const achievements = [
-    { icon: '🎯', name: 'First Feed', description: 'Fed your pet for the first time', earned: true },
-    { icon: '🔥', name: '7-Day Streak', description: 'Fed your pet 7 days in a row', earned: true },
-    { icon: '💎', name: 'Diamond Hands', description: 'Staked over $500', earned: false },
-    { icon: '🏆', name: 'Top 10', description: 'Reached top 10 on leaderboard', earned: false },
-    { icon: '👑', name: 'Pet Master', description: 'Reached Level 10', earned: false },
-    { icon: '💰', name: 'Whale', description: 'Staked over $5000', earned: false },
+    {
+      icon: "🎯",
+      name: "First Feed",
+      description: "Fed your pet for the first time",
+      earned: true,
+    },
+    {
+      icon: "🔥",
+      name: "7-Day Streak",
+      description: "Fed your pet 7 days in a row",
+      earned: true,
+    },
+    {
+      icon: "💎",
+      name: "Diamond Hands",
+      description: "Staked over $500",
+      earned: false,
+    },
+    {
+      icon: "🏆",
+      name: "Top 10",
+      description: "Reached top 10 on leaderboard",
+      earned: false,
+    },
+    {
+      icon: "👑",
+      name: "Pet Master",
+      description: "Reached Level 10",
+      earned: false,
+    },
+    {
+      icon: "💰",
+      name: "Whale",
+      description: "Staked over $5000",
+      earned: false,
+    },
   ];
 
   return (
@@ -65,19 +95,26 @@ const Profile: React.FC = () => {
               key={index}
               className={`
                 rounded-xl p-4 border transition-all
-                ${achievement.earned 
-                  ? 'bg-gradient-to-br from-purple-900/50 to-pink-900/50 border-purple-500/20' 
-                  : 'bg-slate-800/30 border-slate-700/30 opacity-50'
+                ${
+                  achievement.earned
+                    ? "bg-gradient-to-br from-purple-900/50 to-pink-900/50 border-purple-500/20"
+                    : "bg-slate-800/30 border-slate-700/30 opacity-50"
                 }
               `}
             >
               <div className="flex items-start gap-3">
                 <div className="text-3xl">{achievement.icon}</div>
                 <div className="flex-1">
-                  <div className="font-bold text-white mb-1">{achievement.name}</div>
-                  <div className="text-sm text-gray-400">{achievement.description}</div>
+                  <div className="font-bold text-white mb-1">
+                    {achievement.name}
+                  </div>
+                  <div className="text-sm text-gray-400">
+                    {achievement.description}
+                  </div>
                   {achievement.earned && (
-                    <div className="text-xs text-green-400 mt-2">✓ Unlocked</div>
+                    <div className="text-xs text-green-400 mt-2">
+                      ✓ Unlocked
+                    </div>
                   )}
                   {!achievement.earned && (
                     <div className="text-xs text-gray-500 mt-2">🔒 Locked</div>
@@ -91,28 +128,60 @@ const Profile: React.FC = () => {
 
       {/* Activity History */}
       <Card glowColor="purple">
-        <h2 className="text-2xl font-bold text-purple-300 mb-6">📊 Recent Activity</h2>
+        <h2 className="text-2xl font-bold text-purple-300 mb-6">
+          📊 Recent Activity
+        </h2>
         <div className="space-y-3">
           {[
-            { action: 'Fed pet', amount: '+$50', time: '2 hours ago', type: 'feed' },
-            { action: 'Fed pet', amount: '+$50', time: '1 day ago', type: 'feed' },
-            { action: 'Withdrew funds', amount: '-$25', time: '3 days ago', type: 'withdraw' },
-            { action: 'Fed pet', amount: '+$75', time: '4 days ago', type: 'feed' },
+            {
+              action: "Fed pet",
+              amount: "+$50",
+              time: "2 hours ago",
+              type: "feed",
+            },
+            {
+              action: "Fed pet",
+              amount: "+$50",
+              time: "1 day ago",
+              type: "feed",
+            },
+            {
+              action: "Withdrew funds",
+              amount: "-$25",
+              time: "3 days ago",
+              type: "withdraw",
+            },
+            {
+              action: "Fed pet",
+              amount: "+$75",
+              time: "4 days ago",
+              type: "feed",
+            },
           ].map((activity, index) => (
             <div
               key={index}
               className="bg-slate-700/50 rounded-lg p-4 flex items-center justify-between"
             >
               <div className="flex items-center gap-3">
-                <div className={`text-2xl ${activity.type === 'feed' ? 'text-green-400' : 'text-red-400'}`}>
-                  {activity.type === 'feed' ? '🍖' : '💸'}
+                <div
+                  className={`text-2xl ${
+                    activity.type === "feed" ? "text-green-400" : "text-red-400"
+                  }`}
+                >
+                  {activity.type === "feed" ? "🍖" : "💸"}
                 </div>
                 <div>
-                  <div className="font-medium text-white">{activity.action}</div>
+                  <div className="font-medium text-white">
+                    {activity.action}
+                  </div>
                   <div className="text-sm text-gray-400">{activity.time}</div>
                 </div>
               </div>
-              <div className={`font-bold ${activity.type === 'feed' ? 'text-green-400' : 'text-red-400'}`}>
+              <div
+                className={`font-bold ${
+                  activity.type === "feed" ? "text-green-400" : "text-red-400"
+                }`}
+              >
                 {activity.amount}
               </div>
             </div>

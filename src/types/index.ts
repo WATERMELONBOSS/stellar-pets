@@ -4,7 +4,7 @@
 export interface Pet {
   id: string;
   name: string;
-  type: 'dragon' | 'pig' | 'puppy';
+  type: "dragon" | "pig" | "puppy";
   owner: string;
   health: number; // 0-100
   happiness: number; // 0-100
@@ -33,7 +33,7 @@ export interface LeaderboardEntry {
   rank: number;
   user: string;
   petName: string;
-  petType: 'dragon' | 'pig' | 'puppy';
+  petType: "dragon" | "pig" | "puppy";
   totalStaked: number;
   feedingStreak: number;
   health: number;
@@ -53,7 +53,7 @@ export interface LeaderboardEntry {
   rank: number;
   user: string;
   petName: string;
-  petType: 'dragon' | 'pig' | 'puppy';
+  petType: "dragon" | "pig" | "puppy";
   totalStaked: number;
   feedingStreak: number;
   health: number;
